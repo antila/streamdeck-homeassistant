@@ -28,7 +28,7 @@ export const IconFactory = {
         default: (state, attributes, labelTemplate) => {
             let icon;
             if (state === "on") {
-                icon = Icon.switchOn;
+                icon = Icon.switchOn(attributes);
             } else {
                 icon = Icon.switchOff;
             }
@@ -102,7 +102,19 @@ export const IconFactory = {
 }
 
 const Icon = {
-    switchOn:  `<path fill="${colors.active}" d="m43.428 64.186h57.145c13.786 0 25.001-11.215 25.001-25.001 0-13.786-11.215-25.001-25.001-25.001h-57.145c-13.786 0-25.001 11.215-25.001 25.001 0 13.786 11.215 25.001 25.001 25.001zm57.145-42.859c9.8468 0 17.858 8.011 17.858 17.858 0 9.8468-8.011 17.858-17.858 17.858-9.8468 0-17.858-8.011-17.858-17.858 0-9.8468 8.011-17.858 17.858-17.858z" stroke-width="1.7858"/>`,
+    switchOn: (attributes) => {
+        let color = colors.active
+        let opacity = 1
+        if (attributes.rgb_color) {
+            color = '#' + attributes.rgb_color.map((x) => {
+                return x.toString(16).padStart(2, '0');
+            }).join('')
+        }
+        if (attributes.brightness) {
+            opacity = Math.max(attributes.brightness / 255, 0.25);
+        }
+        return `<path fill="${color}" fill-opacity="${opacity}" d="m43.428 64.186h57.145c13.786 0 25.001-11.215 25.001-25.001 0-13.786-11.215-25.001-25.001-25.001h-57.145c-13.786 0-25.001 11.215-25.001 25.001 0 13.786 11.215 25.001 25.001 25.001zm57.145-42.859c9.8468 0 17.858 8.011 17.858 17.858 0 9.8468-8.011 17.858-17.858 17.858-9.8468 0-17.858-8.011-17.858-17.858 0-9.8468 8.011-17.858 17.858-17.858z" stroke-width="1.7858"/>`
+    },
 
     switchOff: `<g fill="${colors.action}" transform="matrix(1.7858 0 0 1.7858 -40.563 -86.408)"><path d="m47.033 60.33c-5.514 0-10 4.486-10 10s4.486 10 10 10 10-4.486 10-10-4.486-10-10-10zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="m79.033 56.33h-32c-7.72 0-14 6.28-14 14s6.28 14 14 14h32c7.72 0 14-6.28 14-14s-6.28-14-14-14zm0 26h-32c-6.617 0-12-5.383-12-12s5.383-12 12-12h32c6.617 0 12 5.383 12 12s-5.383 12-12 12z"/></g>`,
 
